@@ -2,6 +2,8 @@ import pygame as pg
 import settings
 import sys
 
+from highscore import showHighscores
+
 pg.init()
 
 # Game class
@@ -10,7 +12,7 @@ class Game:
         self.screen = pg.display.set_mode((settings.WIDTH, settings.HEIGHT))
         self.clock = pg.time.Clock()
         self.running = True
-        self.state = 'highscores'
+        self.state = 'start'
         
     # Run game - state machine
     def run(self):
@@ -24,8 +26,7 @@ class Game:
                 self.playing_update()
                 self.playing_draw()
             elif self.state == 'highscores':
-                self.highscore_events()
-                self.highscore_draw()
+                self.highscore()
 
             elif self.state == 'game over':
                 # Game over state
@@ -119,22 +120,32 @@ class Game:
     #     HIGHSCORE FUNCTIONS     #
     ###############################
 
-    #  Inputs
-    def highscore_events(self):
+    def highscore(self):
+        self.screen_reset()
+        highscores = showHighscores()[:-1]
+
         for event in pg.event.get():
             if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 self.running = False
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 self.state = 'start'
-
-    # Show highscores
-    def highscore_draw(self):
-        self.screen_reset()
+        
         text, rect = self.draw_text(
             'Highscores', 
             'assets/fonts/PressStart2P.ttf', 
-            32, (255, 255, 255), 
+            26, (255, 255, 255), 
             settings.WIDTH // 2, settings.HEIGHT - (settings.HEIGHT - 100)
         )
         self.screen.blit(text, rect)
+
+        text_offset = 160
+        for score in highscores:
+            text, rect = self.draw_text(
+                f"Score: {score[1]} | Level: {score[2]}", 
+                'assets/fonts/PressStart2P.ttf', 
+                20, (255, 255, 255), 
+                settings.WIDTH // 2, settings.HEIGHT - (settings.HEIGHT - text_offset)
+            )
+            self.screen.blit(text, rect)
+            text_offset += 60
         pg.display.update()
