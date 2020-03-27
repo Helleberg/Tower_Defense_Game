@@ -2,7 +2,7 @@ import pygame as pg
 import settings
 import sys
 
-from highscore import showHighscores
+from highscore import highscores
 
 pg.init()
 
@@ -12,7 +12,7 @@ class Game:
         self.screen = pg.display.set_mode((settings.WIDTH, settings.HEIGHT))
         self.clock = pg.time.Clock()
         self.running = True
-        self.state = 'start'
+        self.state = 'highscores'
         
     # Run game - state machine
     def run(self):
@@ -26,7 +26,7 @@ class Game:
                 self.playing_update()
                 self.playing_draw()
             elif self.state == 'highscores':
-                self.highscore()
+                highscores(self.screen)
 
             elif self.state == 'game over':
                 # Game over state
@@ -44,17 +44,6 @@ class Game:
     # Reset Game Screen
     def screen_reset(self):
         self.screen.fill((0,0,0))
-    
-    # Text draw function
-    def draw_text(self, text, text_font, size, color, pos_x, pos_y):
-        font = pg.font.Font(text_font, size)
-        text = font.render(text, True, color)
-        return text, self.text_rect(text, pos_x, pos_y)
-    
-    def text_rect(self, text, pos_x, pos_y):
-        textRect = text.get_rect()
-        textRect.center = (pos_x, pos_y)
-        return textRect
     
     # Grid draw function
     def draw_grid(self):
@@ -114,38 +103,4 @@ class Game:
         self.draw_grid()
         # text, rect = self.draw_text('Welcome to the game', 'fonts/PressStart2P.ttf', 32, (255, 255, 255), self.config["width"] // 2, self.config["height"] // 2)
         # self.screen.blit(text, rect)
-        pg.display.update()
-
-    ###############################
-    #     HIGHSCORE FUNCTIONS     #
-    ###############################
-
-    def highscore(self):
-        self.screen_reset()
-        highscores = showHighscores()[:-1]
-
-        for event in pg.event.get():
-            if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                self.running = False
-            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                self.state = 'start'
-        
-        text, rect = self.draw_text(
-            'Highscores', 
-            'assets/fonts/PressStart2P.ttf', 
-            26, (255, 255, 255), 
-            settings.WIDTH // 2, settings.HEIGHT - (settings.HEIGHT - 100)
-        )
-        self.screen.blit(text, rect)
-
-        text_offset = 160
-        for score in highscores:
-            text, rect = self.draw_text(
-                f"Score: {score[1]} | Level: {score[2]}", 
-                'assets/fonts/PressStart2P.ttf', 
-                20, (255, 255, 255), 
-                settings.WIDTH // 2, settings.HEIGHT - (settings.HEIGHT - text_offset)
-            )
-            self.screen.blit(text, rect)
-            text_offset += 60
         pg.display.update()
