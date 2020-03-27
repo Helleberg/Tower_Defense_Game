@@ -1,4 +1,5 @@
 import pygame as pg
+import tilemap
 import settings
 import sys
 
@@ -11,6 +12,9 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         self.state = 'highscores'
+        self.map = tilemap.Map('assets/maps/map_0.tmx')
+        self.map_img = self.map.make_map()
+        self.map_rect = self.map_img.get_rect()
         
     # Run game - state machine
     def run(self):
@@ -109,6 +113,8 @@ class Game:
     def playing_draw(self):
         # Reset screen
         self.screen_reset()
+        # Draw map
+        self.map.draw_map(self.screen, self.map_img, (0, 0))
         # Draw grid
         self.draw_grid()
         # text, rect = self.draw_text('Welcome to the game', 'fonts/PressStart2P.ttf', 32, (255, 255, 255), self.config["width"] // 2, self.config["height"] // 2)
