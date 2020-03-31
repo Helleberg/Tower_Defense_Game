@@ -1,4 +1,5 @@
 import pygame as pg
+import tilemap
 import settings
 import functions
 import sys
@@ -16,6 +17,9 @@ class Game:
         self.menu = Menu(self.screen)
         self.running = True
         self.state = 'highscores'
+        self.map = tilemap.Map('assets/maps/map_0.tmx')
+        self.map_img = self.map.make_map()
+        self.map_rect = self.map_img.get_rect()
         
     # Run game - state machine
     def run(self):
