@@ -94,6 +94,8 @@ class Game:
     def playing_draw(self):
         # Reset
         functions.screen_reset(self.screen)
+        # Draw map
+        self.screen.blit(self.map_img, (0, 0))
         # Draw grid
         self.draw_grid()
         # text, rect = self.draw_text('Welcome to the game', 'fonts/PressStart2P.ttf', 32, (255, 255, 255), self.config["width"] // 2, self.config["height"] // 2)
