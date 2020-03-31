@@ -11,3 +11,7 @@ def text_rect(text, pos_x, pos_y):
         textRect = text.get_rect()
         textRect.center = (pos_x, pos_y)
         return textRect
+
+# Reset Game Screen
+def screen_reset(screen):
+    screen.fill((0,0,0))

@@ -6,7 +6,7 @@ import settings
 connection = sqlite3.connect('db/game.db')
 cursor = connection.cursor()
 
-def showHighscores():
+def fetchHighscores():
     # Select all from db
     cursor.execute("SELECT * FROM highscore ORDER BY SCORE DESC;")
     result = cursor.fetchall()
@@ -17,12 +17,13 @@ def saveHighscore():
     pass
 
 def highscores(screen):
-    highscores = showHighscores()[:-1]
+
+    highscores = fetchHighscores()[:-1]
         
     text, rect = functions.draw_text(
         'Highscores', 
-        'assets/fonts/PressStart2P.ttf', 
-        26, (255, 255, 255),
+        'assets/fonts/Gotu-Regular.ttf', 
+        26, (240, 147, 43),
         settings.WIDTH // 2, settings.HEIGHT - (settings.HEIGHT - 100)
     )
     screen.blit(text, rect)
@@ -31,10 +32,19 @@ def highscores(screen):
     for score in highscores:
         text, rect = functions.draw_text(
             f"Points: {score[1]} | Level: {score[2]}", 
-            'assets/fonts/PressStart2P.ttf', 
+            'assets/fonts/Gotu-Regular.ttf', 
             20, (255, 255, 255), 
             settings.WIDTH // 2, settings.HEIGHT - (settings.HEIGHT - text_offset)
         )
         screen.blit(text, rect)
         text_offset += 60
+    
+    text, rect = functions.draw_text(
+        'Press space to continue', 
+        'assets/fonts/Gotu-Regular.ttf', 
+        16, (255, 255, 255),
+        settings.WIDTH // 2, settings.HEIGHT - 100
+    )
+    screen.blit(text, rect)
+
     pg.display.update()
