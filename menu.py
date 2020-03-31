@@ -5,7 +5,7 @@ import settings
 class Menu:
     def __init__(self, screen):
         self.screen = screen
-        self.bg = pg.image.load('assets/imgs/menu_bg.jpg').convert()
+        self.bg = pg.image.load('assets/imgs/bg.png').convert()
 
     def draw(self):
         self.screen.blit(self.bg, [0,0])

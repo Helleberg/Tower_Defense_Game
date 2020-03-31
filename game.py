@@ -97,7 +97,7 @@ class Game:
         # Draw map
         self.screen.blit(self.map_img, (0, 0))
         # Draw grid
-        self.draw_grid()
+        #self.draw_grid()
         # text, rect = self.draw_text('Welcome to the game', 'fonts/PressStart2P.ttf', 32, (255, 255, 255), self.config["width"] // 2, self.config["height"] // 2)
         # self.screen.blit(text, rect)
         pg.display.update()
