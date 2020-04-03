@@ -16,7 +16,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.menu = Menu(self.screen)
         self.running = True
-        self.state = 'highscores'
+        self.state = 'start'
         self.map = tilemap.Map('assets/maps/map_0.tmx')
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
@@ -26,6 +26,7 @@ class Game:
         while self.running:
             if self.state == 'start':
                 self.menu.draw()
+                self.menu.events()
                 self.menuControls()
             elif self.state == 'playing':
                 self.playing_events()
