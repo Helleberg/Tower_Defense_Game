@@ -21,7 +21,8 @@ class Game:
         self.map = tilemap.Map('assets/maps/map_0.tmx')
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
-        self.enemies = enemies.spawn((-32, 96), self.map.path)
+        self.enemy_group = pg.sprite.Group()
+        self.enemies = enemies.spawn(self.enemy_group, (-32, 96), self.map.path)
         
     # Run game - state machine
     def run(self):
@@ -91,8 +92,9 @@ class Game:
     # Update player and enemies on the screen
     def playing_update(self):
         # Move enemy
-        for enemy in self.enemies:
-            enemy.update()
+        self.enemy_group.update()
+        # for enemy in self.enemies:
+        #     enemy.update()
 
     # Draw background, text, player and enemies
     def playing_draw(self):
@@ -105,7 +107,8 @@ class Game:
         # text, rect = self.draw_text('Welcome to the game', 'fonts/PressStart2P.ttf', 32, (255, 255, 255), self.config["width"] // 2, self.config["height"] // 2)
         # self.screen.blit(text, rect)
         # Draw Enemies
-        for enemy in self.enemies:
-            enemy.draw(self.screen)
+        self.enemy_group.draw(self.screen)
+        # for enemy in self.enemies:
+        #     enemy.draw(self.screen)
 
         pg.display.update()

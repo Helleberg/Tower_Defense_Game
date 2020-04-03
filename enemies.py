@@ -1,20 +1,25 @@
 import pygame as pg
 import tilemap
 import time
+import os
+import math
 from pygame.math import Vector2
 
-def spawn(s_pos, path):
+def spawn(sprite_gruop, s_pos, path):
     enemies = []
-    enemies.append(Enemy(s_pos, path))
+    enemies.append(Enemy(sprite_gruop, s_pos, path))
     # for i in range(s_amount):
     #     enemies.append(Enemy(s_pos, path))
     #     time.sleep(s_interval)
+    for enemy in enemies:
+        sprite_gruop.add(enemy)
     return enemies
 
-class Enemy():
-    def __init__(self, pos, waypoints):
-        self.image = pg.Surface((32,32))
-        self.image.fill(pg.Color('dodgerblue'))
+class Enemy(pg.sprite.Sprite):
+    def __init__(self, sprite_gruop, pos, waypoints):
+        pg.sprite.Sprite.__init__(self)
+        self.enemy_group = sprite_gruop
+        self.image = pg.image.load("assets/imgs/enemies/Guy_green.png").convert_alpha()
         self.rect = self.image.get_rect(center=pos)
         self.vel = Vector2(0, 0)
         self.max_speed = 5
@@ -36,11 +41,13 @@ class Enemy():
                 self.target = self.waypoints[self.waypoint_index]
             else:
                 # enemy is in goal take away som health and despawn the enemy.
+                self.enemy_group.remove(self)
                 print("dead")
         if distance <= self.target_radius:
             # If we're approaching the target, we slow down.
             self.vel = heading * (distance / self.target_radius * self.max_speed)
-        else:  # Otherwise move with max_speed.
+        else:
+            # Otherwise move with max_speed.
             self.vel = heading * self.max_speed
 
         self.pos += self.vel
