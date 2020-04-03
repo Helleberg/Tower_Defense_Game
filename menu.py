@@ -7,9 +7,9 @@ class Menu:
         self.screen = screen
         self.bg = pg.image.load('assets/imgs/bg.png').convert()
         self.buttons = [
-            Button('assets/imgs/play_btn.png', 300),
-            Button('assets/imgs/highscore_btn.png', 400),
-            Button('assets/imgs/quit_btn.png', 500),
+            Button('assets/imgs/play_btn.png', 300, 'playing'),
+            Button('assets/imgs/highscore_btn.png', 400, 'highscores'),
+            Button('assets/imgs/quit_btn.png', 500, 'quit'),
         ]
 
     def draw(self):
@@ -24,11 +24,12 @@ class Menu:
         pg.display.update()
 
 class Button:
-    def __init__(self, image, offset):
+    def __init__(self, image, offset, event):
         self.img = pg.image.load(image).convert()
         self.width, self.height = self.img.get_rect().size
         self.rect = self.img.get_rect()
         self.rect.center = (settings.WIDTH // 2, offset)
+        self.event = event
     
     def draw(self):
         return [self.img, self.rect]

@@ -17,6 +17,7 @@ def saveHighscore():
     pass
 
 def highscores(screen):
+    functions.screen_reset(screen)
 
     highscores = fetchHighscores()[:-1]
         

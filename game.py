@@ -66,7 +66,7 @@ class Game:
                 x,y = event.pos
                 for btn in self.menu.buttons:
                     if btn.rect.collidepoint(x,y):
-                        print(btn, "clicked!")
+                        self.state = btn.event
 
     ###############################
     #       HELPER FUNCTIONS      #
