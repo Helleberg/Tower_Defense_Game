@@ -3,7 +3,7 @@ import tilemap
 import time
 import os
 import math
-from pygame.math import Vector2
+from pygame.math import Vector2 as vec
 
 def spawn(sprite_gruop, s_pos, path):
     enemies = []
@@ -21,9 +21,10 @@ class Enemy(pg.sprite.Sprite):
         self.enemy_group = sprite_gruop
         self.image = pg.image.load("assets/imgs/enemies/Guy_green.png").convert_alpha()
         self.rect = self.image.get_rect(center=pos)
-        self.vel = Vector2(0, 0)
+        self.vel = vec(0, 0)
         self.max_speed = 5
-        self.pos = Vector2(pos)
+        self.pos = vec(pos)
+        self.rot = 0
         self.waypoints = waypoints
         self.waypoint_index = 0
         self.target = self.waypoints[self.waypoint_index]
@@ -39,6 +40,7 @@ class Enemy(pg.sprite.Sprite):
                 # Increment the waypoint index to swtich the target.
                 self.waypoint_index = (self.waypoint_index + 1)
                 self.target = self.waypoints[self.waypoint_index]
+                self.rotate()
             else:
                 # enemy is in goal take away som health and despawn the enemy.
                 self.enemy_group.remove(self)
@@ -51,6 +53,12 @@ class Enemy(pg.sprite.Sprite):
             self.vel = heading * self.max_speed
 
         self.pos += self.vel
+        self.rect.center = self.pos
+    
+    def rotate(self):
+        self.rot = (self.target - self.pos).angle_to(vec(1, 0))
+        self.image = pg.transform.rotate(self.image, self.rot)
+        self.rect = self.image.get_rect()
         self.rect.center = self.pos
     
     def draw(self, surface):
