@@ -1,6 +1,6 @@
 # TD Game settings
 # Screen
-WIDTH = 1024 # 16 x 64
+WIDTH = 1324 # 16 x 64
 HEIGHT = 768 # 12 x 64
 FPS = 60
 

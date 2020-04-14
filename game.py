@@ -6,6 +6,7 @@ import sys
 
 from highscore import highscores
 from menu import Menu
+from player import Player
 
 pg.init()
 
@@ -14,6 +15,7 @@ class Game:
     def __init__(self):
         self.screen = pg.display.set_mode((settings.WIDTH, settings.HEIGHT))
         self.clock = pg.time.Clock()
+        self.player = Player(self.screen)
         self.menu = Menu(self.screen)
         self.running = True
         self.state = 'start'
@@ -60,8 +62,6 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 self.running = False
-            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                self.state = 'playing'
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 x,y = event.pos
                 for btn in self.menu.buttons:
@@ -101,6 +101,7 @@ class Game:
         functions.screen_reset(self.screen)
         # Draw map
         self.screen.blit(self.map_img, (0, 0))
+        self.player.draw()
         # Draw grid
         #self.draw_grid()
         # text, rect = self.draw_text('Welcome to the game', 'fonts/PressStart2P.ttf', 32, (255, 255, 255), self.config["width"] // 2, self.config["height"] // 2)
