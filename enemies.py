@@ -37,15 +37,16 @@ class Enemy(pg.sprite.Sprite):
         heading.normalize_ip()
         if distance <= 2:  # We're closer than 2 pixels.
             if self.waypoint_index >= 0 and self.waypoint_index < len(self.waypoints) - 1:
-                # Rotate enemy
-                self.rot = (self.target - self.pos).angle_to(vec(1, 0))
-                print("rotate target", self.rot)
-                self.image = pg.transform.rotate(self.image, self.rot)
-                self.rect = self.image.get_rect()
-                self.rect.center = self.pos
                 # Increment the waypoint index to swtich the target.
                 self.waypoint_index = (self.waypoint_index + 1)
                 self.target = self.waypoints[self.waypoint_index]
+                # Rotate enemy
+                print(self.target)
+                print(self.pos)
+                self.rot = (self.target - self.pos).angle_to(vec(1, 0))
+                # print(self.rot)
+                self.image = pg.transform.rotate(self.image, self.rot)
+                self.rect = self.image.get_rect()
             else:
                 # Enemy is in goal take away som health and despawn the enemy.
                 self.enemy_group.remove(self)
