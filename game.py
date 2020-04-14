@@ -93,8 +93,6 @@ class Game:
     def playing_update(self):
         # Move enemy
         self.enemy_group.update()
-        # for enemy in self.enemies:
-        #     enemy.update()
 
     # Draw background, text, player and enemies
     def playing_draw(self):
@@ -104,11 +102,7 @@ class Game:
         self.screen.blit(self.map_img, (0, 0))
         # Draw grid
         # self.draw_grid()
-        # text, rect = self.draw_text('Welcome to the game', 'fonts/PressStart2P.ttf', 32, (255, 255, 255), self.config["width"] // 2, self.config["height"] // 2)
-        # self.screen.blit(text, rect)
         # Draw Enemies
         self.enemy_group.draw(self.screen)
-        # for enemy in self.enemies:
-        #     enemy.draw(self.screen)
 
         pg.display.update()
