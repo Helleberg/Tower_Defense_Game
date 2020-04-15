@@ -21,11 +21,15 @@ class Game:
         self.map = tilemap.Map('assets/maps/map_0.tmx')
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
-        self.enemy_group = pg.sprite.Group()
-        self.enemies = enemies.spawn(self.enemy_group, (-32, 96), self.map.path)
         
     # Run game - state machine
     def run(self):
+        # initialize all variables and do all the setup for the games startup
+        self.all_sprites = pg.sprite.Group()
+        self.enemies_sprites = pg.sprite.Group()
+        self.enemies = enemies.spawn(self, (-32, 96), self.map.path)
+
+        # Run the game
         while self.running:
             if self.state == 'start':
                 self.menu.draw()
@@ -92,7 +96,7 @@ class Game:
     # Update player and enemies on the screen
     def playing_update(self):
         # Move enemy
-        self.enemy_group.update()
+        self.all_sprites.update()
 
     # Draw background, text, player and enemies
     def playing_draw(self):
@@ -102,7 +106,11 @@ class Game:
         self.screen.blit(self.map_img, (0, 0))
         # Draw grid
         # self.draw_grid()
-        # Draw Enemies
-        self.enemy_group.draw(self.screen)
+        # Draw all sprites
+        for sprite in self.all_sprites:
+            # Draw enemies health
+            if isinstance(sprite, enemies.Enemy):
+                sprite.draw_health()
+            self.screen.blit(sprite.image, sprite.pos)
 
         pg.display.update()

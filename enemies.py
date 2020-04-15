@@ -3,32 +3,34 @@ import tilemap
 import time
 import os
 import math
+import settings
 from pygame.math import Vector2 as vec
 
-def spawn(sprite_gruop, s_pos, path):
+def spawn(game, s_pos, path):
     enemies = []
-    enemies.append(Enemy(sprite_gruop, s_pos, path))
+    enemies.append(Enemy(game, s_pos, path))
     # for i in range(s_amount):
     #     enemies.append(Enemy(s_pos, path))
     #     time.sleep(s_interval)
-    for enemy in enemies:
-        sprite_gruop.add(enemy)
     return enemies
 
 class Enemy(pg.sprite.Sprite):
-    def __init__(self, sprite_gruop, pos, waypoints):
-        pg.sprite.Sprite.__init__(self)
-        self.enemy_group = sprite_gruop
+    def __init__(self, game, pos, waypoints):
+        self.groups = game.all_sprites, game.enemies_sprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
         self.image = pg.image.load("assets/imgs/enemies/Guy_green.png").convert_alpha()
-        self.rect = self.image.get_rect(center=pos)
+        self.rect = self.image.get_rect()
+        self.pos = vec(pos)
+        self.rect.center = self.pos
         self.vel = vec(0, 0)
         self.max_speed = 5
-        self.pos = vec(pos)
         self.rot = 0
         self.waypoints = waypoints
         self.waypoint_index = 0
         self.target = self.waypoints[self.waypoint_index]
         self.target_radius = 10
+        self.health = 100 # Change depending on which enemey it is
     
     def update(self):
         # A vector pointing from self to the target.
@@ -41,16 +43,13 @@ class Enemy(pg.sprite.Sprite):
                 self.waypoint_index = (self.waypoint_index + 1)
                 self.target = self.waypoints[self.waypoint_index]
                 # Rotate enemy
-                print(self.target)
-                print(self.pos)
                 self.rot = (self.target - self.pos).angle_to(vec(1, 0))
-                # print(self.rot)
                 self.image = pg.transform.rotate(self.image, self.rot)
                 self.rect = self.image.get_rect()
             else:
                 # Enemy is in goal take away som health and despawn the enemy.
-                self.enemy_group.remove(self)
-                print("dead")
+                self.kill()
+                print("dead enemy")
         if distance <= self.target_radius:
             # If we're approaching the target, we slow down.
             self.vel = heading * (distance / self.target_radius * self.max_speed)
@@ -60,6 +59,23 @@ class Enemy(pg.sprite.Sprite):
 
         self.pos += self.vel
         self.rect.center = self.pos
+
+        # Check health
+        if self.health <= 0:
+            self.kill()
+            print("dead enemy")
+        
+    def draw_health(self):
+        if self.health > 60:
+            health_color = settings.GREEN
+        elif self.health > 30:
+            health_color = settings.YELLOW
+        else:
+            health_color = settings.RED
+        width = int(self.rect.width * self.health / 100)
+        self.health_bar = pg.Rect(0, 0, width, 7)
+        if self.health < 100:
+            pg.draw.rect(self.image, health_color, self.health_bar)
     
     def draw(self, surface):
         pass
