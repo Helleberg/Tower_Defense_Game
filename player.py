@@ -7,7 +7,7 @@ class Player:
         self.screen = screen
         self.bg = pg.image.load('assets/imgs/sidebar.png').convert()
         self.health = 100
-        self.money = 0
+        self.money = 39
         self.score = 0
         self.level = 1
     
@@ -31,14 +31,14 @@ class Player:
         text, rect = functions.draw_text(
             f'${self.money}', 'assets/fonts/BRLNSDB.TTF', 
             26, (255, 255, 255), 
-            settings.WIDTH - 150, 150
+            settings.WIDTH - 150, 140
         )
         self.screen.blit(text, rect)
 
         text, rect = functions.draw_text(
             f'Score: {self.score}', 'assets/fonts/BRLNSDB.TTF', 
             26, (255, 255, 255), 
-            settings.WIDTH - 150, 200
+            settings.WIDTH - 150, 180
         )
         self.screen.blit(text, rect)
 
