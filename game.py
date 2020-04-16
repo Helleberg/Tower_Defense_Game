@@ -69,23 +69,11 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 self.running = False
-            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                self.state = 'playing'
-
-    ###############################
-    #       HELPER FUNCTIONS      #
-    ###############################
-
-    # Grid draw function
-    def draw_grid(self):
-        for x in range(0, settings.WIDTH, settings.TILESIZE):
-            pg.draw.line(self.screen, (200, 200, 200), (x, 0), (x, settings.HEIGHT))
-        for y in range(0, settings.HEIGHT, settings.TILESIZE):
-            pg.draw.line(self.screen, (200, 200, 200), (0, y), (settings.WIDTH, y))
-
-    ###############################
-    #      PLAYING FUNCTIONS      #
-    ###############################
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                x,y = event.pos
+                for btn in self.menu.buttons:
+                    if btn.rect.collidepoint(x,y):
+                        self.state = btn.event
 
     def playingControls(self):
         for event in pg.event.get():
@@ -94,6 +82,10 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
+
+    ###############################
+    #      PLAYING FUNCTIONS      #
+    ###############################
 
     # Update sprites on the screen
     def playing_update(self):
