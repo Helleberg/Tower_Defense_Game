@@ -2,9 +2,9 @@ import pygame as pg
 import tilemap
 import settings
 import functions
-import enemies
 import sys
 
+from enemies import Enemy
 from highscore import highscores
 from menu import Menu
 
@@ -27,7 +27,7 @@ class Game:
         # initialize all variables and do all the setup for the games startup
         self.all_sprites = pg.sprite.Group()
         self.enemies_sprites = pg.sprite.Group()
-        self.enemies = enemies.spawn(self, (-32, 96), self.map.path)
+        self.enemy = Enemy(self, (-32, 96), self.map.path)
 
         # Run the game
         while self.running:
@@ -50,7 +50,6 @@ class Game:
             self.clock.tick(settings.FPS)
         pg.quit()
         sys.exit()
-    
 
     ###############################
     #        GAME CONTROLS        #
@@ -73,6 +72,7 @@ class Game:
     ###############################
     #       HELPER FUNCTIONS      #
     ###############################
+
     # Grid draw function
     def draw_grid(self):
         for x in range(0, settings.WIDTH, settings.TILESIZE):
@@ -93,12 +93,12 @@ class Game:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
 
-    # Update player and enemies on the screen
+    # Update sprites on the screen
     def playing_update(self):
-        # Move enemy
+        # Update al sprites
         self.all_sprites.update()
 
-    # Draw background, text, player and enemies
+    # Draw sprites on the screen
     def playing_draw(self):
         # Reset
         functions.screen_reset(self.screen)
@@ -109,7 +109,7 @@ class Game:
         # Draw all sprites
         for sprite in self.all_sprites:
             # Draw enemies health
-            if isinstance(sprite, enemies.Enemy):
+            if isinstance(sprite, Enemy):
                 sprite.draw_health()
             self.screen.blit(sprite.image, sprite.pos)
 

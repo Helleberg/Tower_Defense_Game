@@ -6,13 +6,13 @@ import math
 import settings
 from pygame.math import Vector2 as vec
 
-def spawn(game, s_pos, path):
-    enemies = []
-    enemies.append(Enemy(game, s_pos, path))
-    # for i in range(s_amount):
-    #     enemies.append(Enemy(s_pos, path))
-    #     time.sleep(s_interval)
-    return enemies
+# def spawn(game, s_pos, path):
+#     enemies = []
+#     enemies.append(Enemy(game, s_pos, path))
+#     # for i in range(s_amount):
+#     #     enemies.append(Enemy(s_pos, path))
+#     #     time.sleep(s_interval)
+#     return enemies
 
 class Enemy(pg.sprite.Sprite):
     def __init__(self, game, pos, waypoints):
@@ -20,6 +20,7 @@ class Enemy(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.image.load("assets/imgs/enemies/Guy_green.png").convert_alpha()
+        self.original_image = self.image
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = self.pos
@@ -30,7 +31,7 @@ class Enemy(pg.sprite.Sprite):
         self.waypoint_index = 0
         self.target = self.waypoints[self.waypoint_index]
         self.target_radius = 10
-        self.health = 100 # Change depending on which enemey it is
+        self.health = 90 # Change depending on which enemey it is
     
     def update(self):
         # A vector pointing from self to the target.
@@ -44,7 +45,7 @@ class Enemy(pg.sprite.Sprite):
                 self.target = self.waypoints[self.waypoint_index]
                 # Rotate enemy
                 self.rot = (self.target - self.pos).angle_to(vec(1, 0))
-                self.image = pg.transform.rotate(self.image, self.rot)
+                self.image = pg.transform.rotate(self.original_image, self.rot)
                 self.rect = self.image.get_rect()
             else:
                 # Enemy is in goal take away som health and despawn the enemy.
@@ -73,9 +74,8 @@ class Enemy(pg.sprite.Sprite):
         else:
             health_color = settings.RED
         width = int(self.rect.width * self.health / 100)
-        self.health_bar = pg.Rect(0, 0, width, 7)
+        self.health_bg = pg.Rect(self.pos[0], self.pos[1], 100, 7)
+        self.health_bar = pg.Rect(self.pos[0], self.pos[1], width, 7)
         if self.health < 100:
-            pg.draw.rect(self.image, health_color, self.health_bar)
-    
-    def draw(self, surface):
-        pass
+            pg.draw.rect(self.game.screen, (200, 214, 229), self.health_bg)
+            pg.draw.rect(self.game.screen, health_color, self.health_bar)
