@@ -4,6 +4,7 @@ import settings
 import functions
 import sys
 
+from enemies import Enemy
 from highscore import highscores
 from menu import Menu
 from player import Player
@@ -26,6 +27,12 @@ class Game:
 
     # Run game - state machine
     def run(self):
+        # initialize all variables and do all the setup for the games startup
+        self.all_sprites = pg.sprite.Group()
+        self.enemies_sprites = pg.sprite.Group()
+        self.enemy = Enemy(self, (-32, 96), self.map.path)
+
+        # Run the game
         while self.running:
             if self.state == 'start':
                 self.menu.draw()
@@ -46,7 +53,6 @@ class Game:
             self.clock.tick(settings.FPS)
         pg.quit()
         sys.exit()
-    
 
     ###############################
     #        GAME CONTROLS        #
@@ -63,11 +69,31 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 self.running = False
+<<<<<<< HEAD
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 x,y = event.pos
                 for btn in self.menu.buttons:
                     if btn.rect.collidepoint(x,y):
                         self.state = btn.event
+=======
+            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+                self.state = 'playing'
+
+    ###############################
+    #       HELPER FUNCTIONS      #
+    ###############################
+
+    # Grid draw function
+    def draw_grid(self):
+        for x in range(0, settings.WIDTH, settings.TILESIZE):
+            pg.draw.line(self.screen, (200, 200, 200), (x, 0), (x, settings.HEIGHT))
+        for y in range(0, settings.HEIGHT, settings.TILESIZE):
+            pg.draw.line(self.screen, (200, 200, 200), (0, y), (settings.WIDTH, y))
+
+    ###############################
+    #      PLAYING FUNCTIONS      #
+    ###############################
+>>>>>>> enemies
 
     def playingControls(self):
         for event in pg.event.get():
@@ -77,15 +103,20 @@ class Game:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
 
+<<<<<<< HEAD
     ###############################
     #      PLAYING FUNCTIONS      #
     ###############################
 
     # Update player and enemies on the screen
+=======
+    # Update sprites on the screen
+>>>>>>> enemies
     def playing_update(self):
-        pass
+        # Update al sprites
+        self.all_sprites.update()
 
-    # Draw background, text, player and enemies
+    # Draw sprites on the screen
     def playing_draw(self):
         # Reset
         functions.screen_reset(self.screen)
@@ -93,6 +124,16 @@ class Game:
         self.screen.blit(self.map_img, (0, 0))
         self.player.draw()
         # Draw grid
+<<<<<<< HEAD
         # functions.draw_grid(self.screen)
+=======
+        # self.draw_grid()
+        # Draw all sprites
+        for sprite in self.all_sprites:
+            # Draw enemies health
+            if isinstance(sprite, Enemy):
+                sprite.draw_health()
+            self.screen.blit(sprite.image, sprite.pos)
+>>>>>>> enemies
 
         pg.display.update()
