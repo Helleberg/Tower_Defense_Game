@@ -7,6 +7,7 @@ import sys
 from highscore import highscores
 from menu import Menu
 from player import Player
+from waves.waves import WaveCounter
 
 pg.init()
 
@@ -22,7 +23,7 @@ class Game:
         self.map = tilemap.Map('assets/maps/map_0.tmx')
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
-        
+
     # Run game - state machine
     def run(self):
         while self.running:
