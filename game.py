@@ -64,7 +64,7 @@ class Game:
                 self.running = False
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 self.state = 'start'
-    
+    #blalblsd
     def menuControls(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
