@@ -69,13 +69,6 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 self.running = False
-<<<<<<< HEAD
-            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
-                x,y = event.pos
-                for btn in self.menu.buttons:
-                    if btn.rect.collidepoint(x,y):
-                        self.state = btn.event
-=======
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 self.state = 'playing'
 
@@ -93,7 +86,6 @@ class Game:
     ###############################
     #      PLAYING FUNCTIONS      #
     ###############################
->>>>>>> enemies
 
     def playingControls(self):
         for event in pg.event.get():
@@ -103,15 +95,7 @@ class Game:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
 
-<<<<<<< HEAD
-    ###############################
-    #      PLAYING FUNCTIONS      #
-    ###############################
-
-    # Update player and enemies on the screen
-=======
     # Update sprites on the screen
->>>>>>> enemies
     def playing_update(self):
         # Update al sprites
         self.all_sprites.update()
@@ -124,9 +108,6 @@ class Game:
         self.screen.blit(self.map_img, (0, 0))
         self.player.draw()
         # Draw grid
-<<<<<<< HEAD
-        # functions.draw_grid(self.screen)
-=======
         # self.draw_grid()
         # Draw all sprites
         for sprite in self.all_sprites:
@@ -134,6 +115,5 @@ class Game:
             if isinstance(sprite, Enemy):
                 sprite.draw_health()
             self.screen.blit(sprite.image, sprite.pos)
->>>>>>> enemies
 
         pg.display.update()
