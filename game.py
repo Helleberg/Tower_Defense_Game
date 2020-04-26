@@ -69,7 +69,7 @@ class Game:
                 self.running = False
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 self.state = 'start'
-    #blalblsd
+
     def menuControls(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
@@ -87,6 +87,7 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
+            # Towers Buttons
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 x,y = event.pos
                 for btn in self.player.buttons:

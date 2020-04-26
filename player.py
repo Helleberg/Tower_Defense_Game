@@ -2,7 +2,7 @@ import pygame as pg
 import functions
 import settings
 from towers.tower import Tower
-
+from tower_foundation import TowerFoundation
 
 class Player:
     def __init__(self, screen):
@@ -13,7 +13,7 @@ class Player:
         self.score = 0
         self.level = 1
         self.buttons = [
-            Button('assets/imgs/towers/tower_1_btn.jpg', 340, 'buy_tower')
+            Button('assets/imgs/towers/tower_1_btn.jpg', 'assets/imgs/towers/tower_1_btn_active.jpg', 340, 'buy_tower')
         ]
     
     def sidebar(self):
@@ -64,16 +64,25 @@ class Player:
         self.sidebar()
 
 class Button:
-    def __init__(self, image, offset, event):
+    def __init__(self, image, image_ac, offset, event):
+        self.image = image
+        self.image_ac = image_ac
         self.img = pg.image.load(image).convert()
         self.width, self.height = self.img.get_rect().size
         self.rect = self.img.get_rect()
         self.rect.center = (settings.WIDTH-150, offset)
         self.event = event
+        self.active = False
     
     def pressed_event(self, event):
         if event == 'buy_tower':
-            print('buy tower')
-    
+            if self.active:
+                self.active = False
+                self.img = pg.image.load(self.image).convert()
+            else:
+                self.active = True
+                self.img = pg.image.load(self.image_ac).convert()
+                print('buy tower')
+
     def draw(self):
         return [self.img, self.rect]
