@@ -31,7 +31,7 @@ class Enemy(pg.sprite.Sprite):
         self.waypoint_index = 0
         self.target = self.waypoints[self.waypoint_index]
         self.target_radius = 10
-        self.health = 90 # Change depending on which enemey it is
+        self.health = 99 # Change depending on which enemey it is
     
     def update(self):
         # A vector pointing from self to the target.
@@ -74,7 +74,7 @@ class Enemy(pg.sprite.Sprite):
         else:
             health_color = settings.RED
         width = int(self.rect.width * self.health / 100)
-        self.health_bg = pg.Rect(self.pos[0], self.pos[1], 100, 7)
+        self.health_bg = pg.Rect(self.pos[0], self.pos[1], (self.rect.width * 100 / 100), 7)
         self.health_bar = pg.Rect(self.pos[0], self.pos[1], width, 7)
         if self.health < 100:
             pg.draw.rect(self.game.screen, (200, 214, 229), self.health_bg)
