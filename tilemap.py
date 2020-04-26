@@ -19,7 +19,12 @@ class Map:
                     if tile:
                         surface.blit(tile, (x * self.tmxdata.tilewidth, y * self.tmxdata.tileheight))
         for tile_object in self.tmxdata.objects:
-            self.path.append((tile_object.x, tile_object.y))
+            if tile_object.type == "waypoint":
+                # Minus with 16 on the x and y to get the center position of the 32x32 objects and add that as a waypoint to get path list.
+                self.path.append(((tile_object.x - 16), (tile_object.y - 16)))
+            elif tile_object.type == "Tower_foundation":
+                print(tile_object.x, tile_object.y)
+                # create an instance of the ready to build tower image.
     
     def make_map(self):
         temp_surface = pg.Surface((self.width, self.height))
