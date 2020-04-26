@@ -42,5 +42,12 @@ class Player:
         )
         self.screen.blit(text, rect)
 
+        # Sidebar towers
+        text, rect = functions.draw_text(
+            f'Purchase Towers', 'assets/fonts/BRLNSDB.TTF', 
+            22, (255, 255, 255), 
+            settings.WIDTH - 150, 260
+        )
+        self.screen.blit(text, rect)
     def draw(self):
         self.sidebar()
