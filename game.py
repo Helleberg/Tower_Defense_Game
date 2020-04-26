@@ -4,6 +4,7 @@ import settings
 import functions
 import sys
 
+from tower_foundation import TowerFoundation
 from enemies import Enemy
 from highscore import highscores
 from menu import Menu
@@ -21,7 +22,7 @@ class Game:
         self.menu = Menu(self.screen)
         self.running = True
         self.state = 'start'
-        self.map = tilemap.Map('assets/maps/map_0.tmx')
+        self.map = tilemap.Map(self, 'assets/maps/map_0.tmx')
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
 
@@ -31,7 +32,10 @@ class Game:
         self.all_sprites = pg.sprite.Group()
         self.enemies_sprites = pg.sprite.Group()
         self.tower_sprites = pg.sprite.Group()
+        self.tower_foundation_sprites = pg.sprite.Group()
         self.enemy = Enemy(self, (-32, 96), self.map.path)
+        for pos in self.map.tower_foundations_pos:
+            TowerFoundation(self, pos)
 
         # Run the game
         while self.running:
