@@ -18,13 +18,10 @@ class Game:
     def __init__(self):
         self.screen = pg.display.set_mode((settings.WIDTH, settings.HEIGHT))
         self.clock = pg.time.Clock()
-        self.player = Player(self.screen)
+        self.player = Player(self, self.screen)
         self.menu = Menu(self.screen)
         self.running = True
         self.state = 'start'
-        self.map = tilemap.Map(self, 'assets/maps/map_0.tmx')
-        self.map_img = self.map.make_map()
-        self.map_rect = self.map_img.get_rect()
 
     # Run game - state machine
     def run(self):
@@ -33,9 +30,14 @@ class Game:
         self.enemies_sprites = pg.sprite.Group()
         self.tower_sprites = pg.sprite.Group()
         self.tower_foundation_sprites = pg.sprite.Group()
+
+        # Create map
+        self.map = tilemap.Map(self, 'assets/maps/map_0.tmx')
+        self.map_img = self.map.make_map()
+        self.map_rect = self.map_img.get_rect()
+
+        # Create enemy ## TEMP ##
         self.enemy = Enemy(self, (-32, 96), self.map.path)
-        for pos in self.map.tower_foundations_pos:
-            TowerFoundation(self, pos)
 
         # Run the game
         while self.running:
@@ -92,7 +94,7 @@ class Game:
                 x,y = event.pos
                 for btn in self.player.buttons:
                     if btn.rect.collidepoint(x,y):
-                        btn.pressed_event(btn.event)
+                        btn.btn_pressed(btn.event)
 
     ###############################
     #      PLAYING FUNCTIONS      #

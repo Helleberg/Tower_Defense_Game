@@ -7,7 +7,7 @@ class TowerFoundation(pg.sprite.Sprite):
         self.groups = game.all_sprites, game.tower_foundation_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = pg.image.load("assets/imgs/tower_foundation.png").convert_alpha()
+        self.image = pg.image.load("assets/imgs/towers/blank_foundation.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.pos = pos
         self.rect.center = self.pos

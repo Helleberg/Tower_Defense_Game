@@ -5,15 +5,16 @@ from towers.tower import Tower
 from tower_foundation import TowerFoundation
 
 class Player:
-    def __init__(self, screen):
+    def __init__(self, game, screen):
+        self.game = game
         self.screen = screen
         self.bg = pg.image.load('assets/imgs/sidebar.png').convert()
         self.health = 100
-        self.money = 39
+        self.money = 300
         self.score = 0
         self.level = 1
         self.buttons = [
-            Button('assets/imgs/towers/tower_1_btn.jpg', 'assets/imgs/towers/tower_1_btn_active.jpg', 340, 'buy_tower')
+            Button(self, self.game, 'assets/imgs/towers/tower_1_btn.jpg', 'assets/imgs/towers/tower_1_btn_active.jpg', 340, 300, 'buy')
         ]
     
     def sidebar(self):
@@ -59,12 +60,21 @@ class Player:
         for btn in self.buttons:
             img, rect = btn.draw()
             self.screen.blit(img, rect)
+                
+    def buy_tower(self, btn):
+        if btn.check_bal(self.money, btn.price) == True:
+            btn.change_state()
+    
+    def place_tower(self):
+        pass
 
     def draw(self):
         self.sidebar()
 
 class Button:
-    def __init__(self, image, image_ac, offset, event):
+    def __init__(self, player, game, image, image_ac, offset, tower_price, event):
+        self.game = game
+        self.player = player
         self.image = image
         self.image_ac = image_ac
         self.img = pg.image.load(image).convert()
@@ -73,16 +83,29 @@ class Button:
         self.rect.center = (settings.WIDTH-150, offset)
         self.event = event
         self.active = False
+        self.price = tower_price
     
-    def pressed_event(self, event):
-        if event == 'buy_tower':
-            if self.active:
-                self.active = False
-                self.img = pg.image.load(self.image).convert()
-            else:
-                self.active = True
-                self.img = pg.image.load(self.image_ac).convert()
-                print('buy tower')
+    def check_bal(self, p_money, t_price):
+        if p_money >= t_price:
+            return True
+        else:
+            return False
+
+    def change_state(self):
+        if self.active:
+            self.active = False
+            self.img = pg.image.load(self.image).convert()
+            for tower_foundation in self.game.map.tower_foundations:
+                tower_foundation.image = pg.image.load("assets/imgs/towers/blank_foundation.png").convert_alpha()
+        else:
+            self.active = True
+            self.img = pg.image.load(self.image_ac).convert()
+            for tower_foundation in self.game.map.tower_foundations:
+                tower_foundation.image = pg.image.load("assets/imgs/towers/tower_foundation.png").convert_alpha()
+    
+    def btn_pressed(self, event):
+        if event == 'buy':
+            self.player.buy_tower(self)
 
     def draw(self):
         return [self.img, self.rect]
