@@ -31,6 +31,7 @@ class Game:
         # initialize all variables and do all the setup for the games startup
         self.all_sprites = pg.sprite.Group()
         self.enemies_sprites = pg.sprite.Group()
+        self.tower_sprites = pg.sprite.Group()
         self.tower_foundation_sprites = pg.sprite.Group()
         self.enemy = Enemy(self, (-32, 96), self.map.path)
         for pos in self.map.tower_foundations_pos:
