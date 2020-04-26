@@ -3,12 +3,14 @@ import pytmx
 import settings
 
 class Map:
-    def __init__(self, filename):
+    def __init__(self, game, filename):
         tm = pytmx.load_pygame(filename, pixelalpha=True)
         self.width = tm.width * tm.tilewidth
         self.height = tm.height * tm.tileheight
         self.tmxdata = tm
+        self.game = game
         self.path = []
+        self.tower_foundations_pos = []
     
     def render(self, surface):
         ti = self.tmxdata.get_tile_image_by_gid
@@ -23,8 +25,7 @@ class Map:
                 # Minus with 16 on the x and y to get the center position of the 32x32 objects and add that as a waypoint to get path list.
                 self.path.append(((tile_object.x - 16), (tile_object.y - 16)))
             elif tile_object.type == "Tower_foundation":
-                print(tile_object.x, tile_object.y)
-                # create an instance of the ready to build tower image.
+                self.tower_foundations_pos.append(((tile_object.x), (tile_object.y)))
     
     def make_map(self):
         temp_surface = pg.Surface((self.width, self.height))
