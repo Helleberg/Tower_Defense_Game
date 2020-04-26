@@ -72,5 +72,9 @@ class Button:
         self.rect.center = (settings.WIDTH-150, offset)
         self.event = event
     
+    def pressed_event(self, event):
+        if event == 'buy_tower':
+            print('buy tower')
+    
     def draw(self):
         return [self.img, self.rect]

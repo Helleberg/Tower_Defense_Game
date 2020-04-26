@@ -87,6 +87,11 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                x,y = event.pos
+                for btn in self.player.buttons:
+                    if btn.rect.collidepoint(x,y):
+                        btn.pressed_event(btn.event)
 
     ###############################
     #      PLAYING FUNCTIONS      #
