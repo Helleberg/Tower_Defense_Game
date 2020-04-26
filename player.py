@@ -59,7 +59,6 @@ class Player:
         for btn in self.buttons:
             img, rect = btn.draw()
             self.screen.blit(img, rect)
-        pg.display.update()
 
     def draw(self):
         self.sidebar()
